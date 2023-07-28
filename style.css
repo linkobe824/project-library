@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;400;600;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Nunito', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 10% 1fr ;
+  grid-template-areas: "header"
+                        "main";
+}
+
+.contanier {
+  background-color: rgb(233, 230, 230);
+  height: 100%;
+  width: 100%;
+  grid-area: main;
+  padding: 2rem 20%;
+}
+
+.header {
+  grid-area: header;
+  height: 100%;
+  background-color: #64CCC5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header h1 {
+  margin-left: 3rem;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #001C30;  
+}
+
+.header .add {
+  margin-right: 8%;
+  font-size: 1.5rem;
+  background-color: #176B87;
+  color: rgb(243, 240, 240);
+  padding: .5rem 1.5rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: .2rem;
+  border-radius: 1rem;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);;
+}
+
+.header .add:hover{
+  background-color: #08465a;
+}
+
+.header .add i {
+  font-size: 1.2rem;
+}
+
+.card {
+  max-width: 15rem;
+  min-width: 10rem;
+  background-color: #DAFFFB;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border-radius: .5rem;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+}
+
+.card .title {
+  text-transform: capitalize;
+  font-weight: bold;
+}
+
+.not-readed {
+  background-color: #f87171;
+}
