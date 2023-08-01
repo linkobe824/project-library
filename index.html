@@ -11,10 +11,26 @@
 <body>
   <div class="header">
     <h1>Library Project</h1>
-    <a href="" class="add"><i class="fa-solid fa-plus"></i>Add Book</a>
+    <button class="book-add"><i class="fa-solid fa-plus"></i>Add Book</button>
   </div>
   <div class="container">
-   
+  <div class="addBookPopup" >
+    <div class="formPopup" id="popupForm">
+      <form action="" class="formContainer">
+        <h2>Add a new book</h2>
+        <input type="text" name="title" placeholder="Title">
+        <input type="text" name="author" placeholder="Author">
+        <input type="number" min="1" name="pages" placeholder="Number of Pages" >
+        <label for="readed">
+          <input type="checkbox" value="readed" id="readed" checked>
+          Check if readed
+        </label>
+        <button type="submit" class="btn add" id="addBtn">Add Book</button>
+        <button type="button" class="btn cancel" id="cancelBtn">Cancel</button>
+      </form>
+    </div>
+  </div>
+  
   </div>
 </body>
 </html>

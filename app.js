@@ -16,9 +16,12 @@ function addBookToLibrary(book){
 }
 
 function createCard(book) {
+    //deconstruct object
     const {title, author, pages, readed} = book;
     
+    // get the cards container
     const container = document.querySelector('.container');
+    // craete elements
     const cardContainer = document.createElement('div');
     const titleHeading = document.createElement('h2');
     const authorPar = document.createElement('p');
@@ -29,6 +32,7 @@ function createCard(book) {
     const btnRemove = document.createElement('button');
     const btnReaded = document.createElement('button');
     
+    // add html classes
     cardContainer.classList.add('card');
     titleHeading.classList.add('title');
     authorPar.classList.add('author');
@@ -36,6 +40,7 @@ function createCard(book) {
     btnContainer.classList.add('btn-container');
     btnRemove.classList.add('remove-btn');
 
+    // logic for readed/not-readed classes
     if(!readed) {
         btnReaded.classList.add('not-readed-btn');
         btnReaded.textContent = 'Not Readed';
@@ -45,6 +50,7 @@ function createCard(book) {
         btnReaded.textContent = 'Readed';
     }
 
+    // add content to elements
     titleHeading.textContent = title;
     authorPar.textContent = 'Author: ';
     pagesPar.textContent = 'Pages: '
@@ -52,6 +58,7 @@ function createCard(book) {
     authorSpan.textContent = author;
     btnRemove.textContent = 'Remove';
 
+    // create child-parent relationship
     cardContainer.appendChild(titleHeading);
     cardContainer.appendChild(authorPar);
     authorPar.appendChild(authorSpan);
@@ -60,6 +67,7 @@ function createCard(book) {
     cardContainer.appendChild(btnContainer);
     btnContainer.appendChild(btnRemove);
     btnContainer.appendChild(btnReaded);
+    //append the card to the container
     container.appendChild(cardContainer);
 }
 
@@ -67,4 +75,32 @@ function displayBooks(library) {
     library.forEach(book => createCard(book));
 }
 
-displayBooks(myLibrary);
+//displayBooks(myLibrary);
+
+
+// pop up form
+function addBookButton(){
+    const addBtn = document.querySelector('.book-add');
+    addBtn.addEventListener('click', openTheForm);
+}
+
+function formButtons(){
+    const cancelBtn = document.querySelector('#cancelBtn');
+    cancelBtn.addEventListener('click', closeTheForm);
+}
+
+function openTheForm() {
+    document.querySelector(".addBookPopup ").style.display = "block";
+}
+
+function closeTheForm() {
+    document.querySelector(".addBookPopup ").style.display = "none";
+}
+
+function main(){
+    displayBooks(myLibrary);
+    addBookButton();
+    formButtons();
+}
+
+main();
