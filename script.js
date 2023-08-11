@@ -4,15 +4,35 @@ const myLibrary = [
                     {title: "game of thrones", author: "grr martin", pages: "300", readed:false }
 ];
 
-function Book(title, author, pages, readed=false) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.readed = readed;
+class Book {
+    constructor(title, author, pages, readed = false) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.readed = readed;
+    }
 }
 
 function addBookToLibrary(book){
     myLibrary.push(book);
+
+}
+
+//create book
+function createAndAddNewBook(){
+    const addBtn = document.querySelector('.add');
+    
+    addBtn.addEventListener('click', () => {
+        const title = document.querySelector("input[name='title']").value;
+        const author = document.querySelector("input[name='author']").value;
+        const pages = document.querySelector("input[name='pages']").value;
+        const readed = document.querySelector("#readed").checked;
+
+        const bookObj = new Book(title, author, pages, readed);
+        let bookObjString = JSON.stringify(bookObj);
+        addBookToLibrary(JSON.parse(bookObjString));
+        displayBooks(myLibrary);
+    })
 }
 
 function createCard(book) {
@@ -101,6 +121,7 @@ function main(){
     displayBooks(myLibrary);
     addBookButton();
     formButtons();
+    createAndAddNewBook()
 }
 
 main();
