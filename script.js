@@ -1,7 +1,7 @@
 const myLibrary = [
-                    {title: "harry potter", author: "jk rowling", pages: "300", readed:true },
-                    {title: "davinci code", author: "dan brown", pages: "400", readed:true },
-                    {title: "game of thrones", author: "grr martin", pages: "300", readed:false }
+                    {title: "harry potter", author: "jk rowling", pages: "300", readed:true},
+                    {title: "davinci code", author: "dan brown", pages: "400", readed:true},
+                    {title: "game of thrones", author: "grr martin", pages: "300", readed:false}
 ];
 
 class Book {
@@ -11,12 +11,17 @@ class Book {
         this.pages = pages;
         this.readed = readed;
     }
+
+    remove(){
+        
+    }
 }
 
 function addBookToLibrary(book){
     myLibrary.push(book);
 
 }
+
 
 //create book
 function createAndAddNewBook(){
@@ -29,12 +34,31 @@ function createAndAddNewBook(){
         const readed = document.querySelector("#readed").checked;
 
         const bookObj = new Book(title, author, pages, readed);
-        let bookObjString = JSON.stringify(bookObj);
-        addBookToLibrary(JSON.parse(bookObjString));
-        displayBooks(myLibrary);
-    })
+        // let bookObjString = JSON.stringify(bookObj);
+        // addBookToLibrary(JSON.parse(bookObjString));
+        addBookToLibrary(bookObj);
+
+        //add card to the page.
+        createCard(bookObj);
+
+        //clear input values
+        clearInputs();
+    });
 }
 
+function clearInputs(){
+    const title = document.querySelector("input[name='title']");
+    const author = document.querySelector("input[name='author']");
+    const pages = document.querySelector("input[name='pages']");
+    const readed = document.querySelector("#readed");
+
+    title.value = "";
+    author.value = "";
+    pages.value = "";
+    readed.checked = true;
+}
+
+//create card and place it in the DOM
 function createCard(book) {
     //deconstruct object
     const {title, author, pages, readed} = book;
@@ -91,12 +115,11 @@ function createCard(book) {
     container.appendChild(cardContainer);
 }
 
+
+//if the library has books already in it, it will display them.
 function displayBooks(library) {
     library.forEach(book => createCard(book));
 }
-
-//displayBooks(myLibrary);
-
 
 // pop up form
 function addBookButton(){
