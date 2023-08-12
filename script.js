@@ -1,29 +1,155 @@
-const myLibrary = [
-                    {title: "harry potter", author: "jk rowling", pages: "300", readed:true},
-                    {title: "davinci code", author: "dan brown", pages: "400", readed:true},
-                    {title: "game of thrones", author: "grr martin", pages: "300", readed:false}
-];
-
+// Node of linked list
 class Book {
-    constructor(title, author, pages, readed = false) {
+    constructor(title, author, pages, readed){
         this.title = title;
         this.author = author;
         this.pages = pages;
         this.readed = readed;
+
+        this.next = null;
+        this.list = null;
+        this.id = null;
     }
 
-    remove(){
+    removeFromList(){
+        if(!this.list || !this.list.head){
+            return; // node is not linked to any list or list is empty
+        }
+
+        if(this.list.head === this){
+            this.list.head = this.next;
+        } else {
+            let cur = this.list.head;
+            while(cur.next !== this){
+                cur = cur.next;
+            }
+
+            cur.next = this.next;
+        }
+
+        this.list = null;
+    }
+
+    createCard(){
+        //get the cards container
+        const container = document.querySelector('.container');
+        // craete elements
+        const cardContainer = document.createElement('div');
+        const titleHeading = document.createElement('h2');
+        const authorPar = document.createElement('p');
+        const authorSpan = document.createElement('span');
+        const pagesPar = document.createElement('p');
+        const pagesSpan = document.createElement('span');
+        const btnContainer = document.createElement('div');
+        const btnRemove = document.createElement('button');
+        const btnReaded = document.createElement('button');
         
+        // add html classes
+        cardContainer.classList.add('card', `_${this.id}`);
+        titleHeading.classList.add('title');
+        authorPar.classList.add('author');
+        pagesPar.classList.add('pages');
+        btnContainer.classList.add('btn-container');
+        btnRemove.classList.add('remove-btn');
+        btnReaded.classList.add('btn')
+
+        // logic for readed/not-readed classes
+        if(!this.readed) {
+            btnReaded.classList.add('not-readed-btn');
+            btnReaded.textContent = 'Not Readed';
+            cardContainer.classList.add('not-readed');
+        }else {
+            btnReaded.classList.add('readed-btn')
+            btnReaded.textContent = 'Readed';
+        }
+
+        // add content to elements
+        titleHeading.textContent = this.title;
+        authorPar.textContent = 'Author: ';
+        pagesPar.textContent = 'Pages: '
+        pagesSpan.textContent = this.pages;
+        authorSpan.textContent = this.author;
+        btnRemove.textContent = 'Remove';
+
+        // create child-parent relationship
+        cardContainer.appendChild(titleHeading);
+        cardContainer.appendChild(authorPar);
+        authorPar.appendChild(authorSpan);
+        cardContainer.appendChild(pagesPar);
+        pagesPar.appendChild(pagesSpan);
+        cardContainer.appendChild(btnContainer);
+        btnContainer.appendChild(btnRemove);
+        btnContainer.appendChild(btnReaded);
+        //append the card to the container
+        container.appendChild(cardContainer);
+            
+        // btnRemove logic
+        btnRemove.addEventListener('click' , () => {
+            this.removeFromList();
+            this.removeFromDOM();
+        })
+
+        // btnReaded logic
+        btnReaded.addEventListener('click', () => {
+            const card = document.querySelector(`._${this.id}`);
+            const btn = document.querySelector(`._${this.id}>.btn-container>.btn`);
+            if(!card.classList.contains('not-readed')){
+                card.classList.add('not-readed');
+                btn.classList.remove('readed-btn');
+                btn.classList.add('not-readed-btn');
+                btn.textContent = 'Not Readed';
+                this.readed = false;
+            }else {
+                card.classList.remove('not-readed');
+                btn.classList.remove('not-readed-btn');
+                btn.classList.add('readed-btn')
+                btn.textContent = 'Readed';
+                this.readed = true;
+            }
+        })
+    }
+
+    removeFromDOM(){
+        const card = document.querySelector(`._${this.id}`);
+        card.remove();
     }
 }
 
-function addBookToLibrary(book){
-    myLibrary.push(book);
 
+class LinkedList {
+    constructor(){
+        this.head = null;
+        this.size = 0;
+    }
+
+    push(val) {
+        const newNode = val;
+        newNode.list = this;
+
+        if(!this.head) {
+            this.head = newNode;
+        }
+        else {
+            let cur = this.head;
+            while(cur.next) {
+                cur = cur.next;
+            }
+            cur.next = newNode;
+        }
+        this.size++;
+        newNode.id = this.size;
+    }
 }
 
+// list to store books
+const myLibrary = new LinkedList();
 
-//create book
+//test
+const bok = new Book('harry potter', 'jk rowling', 500, true);
+myLibrary.push(bok);
+bok.createCard();
+
+// //create book
 function createAndAddNewBook(){
     const addBtn = document.querySelector('.add');
     
@@ -33,14 +159,9 @@ function createAndAddNewBook(){
         const pages = document.querySelector("input[name='pages']").value;
         const readed = document.querySelector("#readed").checked;
 
-        const bookObj = new Book(title, author, pages, readed);
-        // let bookObjString = JSON.stringify(bookObj);
-        // addBookToLibrary(JSON.parse(bookObjString));
-        addBookToLibrary(bookObj);
-
-        //add card to the page.
-        createCard(bookObj);
-
+        const book = new Book(title, author, pages, readed);
+        myLibrary.push(book);
+        book.createCard();
         //clear input values
         clearInputs();
     });
@@ -56,69 +177,6 @@ function clearInputs(){
     author.value = "";
     pages.value = "";
     readed.checked = true;
-}
-
-//create card and place it in the DOM
-function createCard(book) {
-    //deconstruct object
-    const {title, author, pages, readed} = book;
-    
-    // get the cards container
-    const container = document.querySelector('.container');
-    // craete elements
-    const cardContainer = document.createElement('div');
-    const titleHeading = document.createElement('h2');
-    const authorPar = document.createElement('p');
-    const authorSpan = document.createElement('span');
-    const pagesPar = document.createElement('p');
-    const pagesSpan = document.createElement('span');
-    const btnContainer = document.createElement('div');
-    const btnRemove = document.createElement('button');
-    const btnReaded = document.createElement('button');
-    
-    // add html classes
-    cardContainer.classList.add('card');
-    titleHeading.classList.add('title');
-    authorPar.classList.add('author');
-    pagesPar.classList.add('pages');
-    btnContainer.classList.add('btn-container');
-    btnRemove.classList.add('remove-btn');
-
-    // logic for readed/not-readed classes
-    if(!readed) {
-        btnReaded.classList.add('not-readed-btn');
-        btnReaded.textContent = 'Not Readed';
-        cardContainer.classList.add('not-readed');
-    }else {
-        btnReaded.classList.add('readed-btn')
-        btnReaded.textContent = 'Readed';
-    }
-
-    // add content to elements
-    titleHeading.textContent = title;
-    authorPar.textContent = 'Author: ';
-    pagesPar.textContent = 'Pages: '
-    pagesSpan.textContent = pages;
-    authorSpan.textContent = author;
-    btnRemove.textContent = 'Remove';
-
-    // create child-parent relationship
-    cardContainer.appendChild(titleHeading);
-    cardContainer.appendChild(authorPar);
-    authorPar.appendChild(authorSpan);
-    cardContainer.appendChild(pagesPar);
-    pagesPar.appendChild(pagesSpan);
-    cardContainer.appendChild(btnContainer);
-    btnContainer.appendChild(btnRemove);
-    btnContainer.appendChild(btnReaded);
-    //append the card to the container
-    container.appendChild(cardContainer);
-}
-
-
-//if the library has books already in it, it will display them.
-function displayBooks(library) {
-    library.forEach(book => createCard(book));
 }
 
 // pop up form
@@ -140,11 +198,18 @@ function closeTheForm() {
     document.querySelector(".addBookPopup ").style.display = "none";
 }
 
+
+
+
+
+
 function main(){
-    displayBooks(myLibrary);
+    // displayBooks(myLibrary);
     addBookButton();
     formButtons();
     createAndAddNewBook()
 }
+
+
 
 main();
